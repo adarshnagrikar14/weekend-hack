@@ -1,0 +1,45 @@
+# Python virtual environments
+venv/
+.env
+
+# Py cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Compiled zip or bytecode
+*.pyz
+*.pyw
+*.pywz
+*.pyzw
+
+# FastAPI typical paths
+instance/
+*.sqlite3
+*.db
+alembic/
+migrations/
+
+# Test artifacts
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+
+# VSCode settings
+.vscode/
+.idea/
+*.code-workspace
+
+# Mac system
+.DS_Store
+
+# Environment, logs, etc.
+.env.*
+*.env
+*.log
+*.bak
+
+# Resources
+problem_statement/
