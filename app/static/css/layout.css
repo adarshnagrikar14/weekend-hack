@@ -1,0 +1,132 @@
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.side-rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 1.4rem;
+  border-right: 1px solid var(--line);
+  background: rgba(5, 12, 24, 0.72);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.workspace {
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.topbar {
+  min-height: 360px;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius-lg) + 8px);
+  padding: clamp(1.4rem, 4vw, 3rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  background:
+    linear-gradient(120deg, rgba(8, 17, 31, 0.82), rgba(8, 17, 31, 0.42)),
+    radial-gradient(circle at 72% 28%, rgba(115, 240, 196, 0.28), transparent 34%),
+    radial-gradient(circle at 100% 100%, rgba(141, 184, 255, 0.2), transparent 30%);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.topbar > div:first-child {
+  display: grid;
+  gap: 1rem;
+}
+
+.topbar-actions {
+  min-width: 220px;
+  display: grid;
+  justify-items: end;
+  gap: 0.75rem;
+}
+
+.hero-grid,
+.cockpit-grid,
+.tracking-grid,
+.evidence-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.8fr);
+  gap: 1.15rem;
+}
+
+.fulfilment-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.9fr);
+  gap: 1.15rem;
+}
+
+.cockpit-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wide-panel {
+  min-height: 320px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+@media (max-width: 1120px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .side-rail {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rail-nav,
+  .rail-note {
+    display: none;
+  }
+
+  .topbar,
+  .hero-grid,
+  .cockpit-grid,
+  .fulfilment-grid,
+  .tracking-grid,
+  .evidence-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+    min-height: 300px;
+  }
+
+  .topbar-actions {
+    justify-items: start;
+  }
+}
+
+@media (max-width: 680px) {
+  .workspace,
+  .side-rail {
+    padding: 0.8rem;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+}

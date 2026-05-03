@@ -1,0 +1,98 @@
+[
+  {
+    "id": "res-101",
+    "name": "Kavya Nair",
+    "role": "AI Engineer",
+    "skills": ["GenAI", "Prompt Engineering", "FastAPI", "Structured Outputs"],
+    "proficiency": 91,
+    "availability": 70,
+    "allocation": 30,
+    "cost_band": "M",
+    "timezone": "IST",
+    "history": ["AI intake bot", "document triage assistant"]
+  },
+  {
+    "id": "res-102",
+    "name": "Arjun Shah",
+    "role": "Full-stack Engineer",
+    "skills": ["JavaScript", "FastAPI", "SQLite", "UX Engineering"],
+    "proficiency": 88,
+    "availability": 80,
+    "allocation": 20,
+    "cost_band": "M",
+    "timezone": "IST",
+    "history": ["operations cockpit", "workflow dashboard"]
+  },
+  {
+    "id": "res-103",
+    "name": "Nisha Kapoor",
+    "role": "Data / MLOps Engineer",
+    "skills": ["MLOps", "Data Pipelines", "Monitoring", "Python"],
+    "proficiency": 85,
+    "availability": 55,
+    "allocation": 45,
+    "cost_band": "H",
+    "timezone": "IST",
+    "history": ["model observability", "data quality rules"]
+  },
+  {
+    "id": "res-104",
+    "name": "Dev Patel",
+    "role": "Business Analyst",
+    "skills": ["Process Mining", "SLA Design", "Stakeholder Mapping", "Domain Discovery"],
+    "proficiency": 83,
+    "availability": 65,
+    "allocation": 35,
+    "cost_band": "L",
+    "timezone": "IST",
+    "history": ["intake redesign", "KPI rationalization"]
+  },
+  {
+    "id": "res-105",
+    "name": "Sara D'Souza",
+    "role": "QA / Governance",
+    "skills": ["Responsible AI", "Compliance", "Test Strategy", "Risk Controls"],
+    "proficiency": 87,
+    "availability": 75,
+    "allocation": 25,
+    "cost_band": "M",
+    "timezone": "IST",
+    "history": ["AI governance checklist", "release assurance"]
+  },
+  {
+    "id": "res-106",
+    "name": "Imran Khan",
+    "role": "AI Engineer",
+    "skills": ["RAG", "Document AI", "Embeddings", "Python"],
+    "proficiency": 86,
+    "availability": 45,
+    "allocation": 55,
+    "cost_band": "M",
+    "timezone": "IST",
+    "history": ["knowledge assistant", "policy search"]
+  },
+  {
+    "id": "res-107",
+    "name": "Pooja Sen",
+    "role": "Solution Architect",
+    "skills": ["Solution Architecture", "Cloud", "Integration", "Partner Governance"],
+    "proficiency": 90,
+    "availability": 60,
+    "allocation": 40,
+    "cost_band": "H",
+    "timezone": "IST",
+    "history": ["partner integration", "platform blueprint"]
+  },
+  {
+    "id": "res-108",
+    "name": "Rohan Gupta",
+    "role": "Full-stack Engineer",
+    "skills": ["JavaScript", "Accessibility", "Realtime UI", "API Design"],
+    "proficiency": 82,
+    "availability": 90,
+    "allocation": 10,
+    "cost_band": "L",
+    "timezone": "IST",
+    "history": ["live agent UI", "service portal"]
+  }
+]

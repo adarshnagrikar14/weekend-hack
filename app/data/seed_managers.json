@@ -1,0 +1,46 @@
+[
+  {
+    "id": "mgr-001",
+    "name": "Ananya Rao",
+    "title": "AI Delivery Lead",
+    "business_units": ["Retail", "Manufacturing", "Shared Services"],
+    "domains": ["Computer Vision", "Demand Forecasting", "Workflow Automation"],
+    "skills": ["GenAI", "MLOps", "FastAPI", "Governance", "Process Mining"],
+    "current_load": 62,
+    "availability": "available",
+    "delivery_score": 93
+  },
+  {
+    "id": "mgr-002",
+    "name": "Rahul Menon",
+    "title": "Automation Practice Manager",
+    "business_units": ["BFSI", "Insurance", "Operations"],
+    "domains": ["Document AI", "Risk Analytics", "Customer Service"],
+    "skills": ["LLM Apps", "RAG", "Compliance", "Workflow Automation", "SLA Design"],
+    "current_load": 78,
+    "availability": "limited",
+    "delivery_score": 88
+  },
+  {
+    "id": "mgr-003",
+    "name": "Meera Iyer",
+    "title": "Innovation Program Lead",
+    "business_units": ["Healthcare", "Life Sciences", "AI Club"],
+    "domains": ["Knowledge Assistants", "Data Platforms", "Experimentation"],
+    "skills": ["Hackathon Coaching", "Prompt Engineering", "Product Discovery", "Responsible AI"],
+    "current_load": 42,
+    "availability": "available",
+    "delivery_score": 91
+  },
+  {
+    "id": "mgr-004",
+    "name": "Vikram Sethi",
+    "title": "Partner Delivery Manager",
+    "business_units": ["Telecom", "Energy", "Partner Ecosystem"],
+    "domains": ["Contact Center AI", "IoT Analytics", "Cloud Migration"],
+    "skills": ["Partner Governance", "Vendor Fit", "Commercials", "Solution Architecture"],
+    "current_load": 56,
+    "availability": "available",
+    "delivery_score": 86
+  }
+]

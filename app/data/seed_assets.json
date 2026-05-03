@@ -1,0 +1,42 @@
+[
+  {
+    "id": "asset-001",
+    "name": "Demand Triage JSON Schema Kit",
+    "type": "accelerator",
+    "domains": ["Workflow Automation", "Document AI", "Knowledge Assistants"],
+    "skills": ["Structured Outputs", "FastAPI", "Governance"],
+    "reuse_score": 92,
+    "saves_days": 4,
+    "description": "Reusable prompts, schemas, and validators for converting messy demand text into auditable triage records."
+  },
+  {
+    "id": "asset-002",
+    "name": "Manager Assignment Scoring Template",
+    "type": "template",
+    "domains": ["Workflow Automation", "Demand Forecasting"],
+    "skills": ["SLA Design", "Process Mining", "Governance"],
+    "reuse_score": 84,
+    "saves_days": 3,
+    "description": "Weighted scoring model for expertise, workload, ownership, and delivery confidence."
+  },
+  {
+    "id": "asset-003",
+    "name": "RAG Starter Agent",
+    "type": "agent",
+    "domains": ["Knowledge Assistants", "Document AI", "Customer Service"],
+    "skills": ["RAG", "Embeddings", "LLM Apps"],
+    "reuse_score": 88,
+    "saves_days": 6,
+    "description": "Base retrieval agent with source-grounded answers and governance logging."
+  },
+  {
+    "id": "asset-004",
+    "name": "SLA Risk Monitor",
+    "type": "accelerator",
+    "domains": ["Workflow Automation", "Operations", "Risk Analytics"],
+    "skills": ["Monitoring", "SLA Design", "Data Pipelines"],
+    "reuse_score": 81,
+    "saves_days": 5,
+    "description": "Rules and dashboard widgets for deadline, dependency, and capacity risk."
+  }
+]

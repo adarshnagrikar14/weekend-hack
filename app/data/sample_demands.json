@@ -1,0 +1,32 @@
+[
+  {
+    "title": "AI assistant for vendor invoice triage",
+    "requester": "Priya Sharma",
+    "business_unit": "Operations",
+    "problem_statement": "The accounts payable team receives thousands of vendor invoices through email. Manual checks for missing PO details, duplicate invoices, and tax mismatches delay approvals. We need an AI-assisted workflow that reads invoices, identifies exceptions, routes clean cases, and flags risky cases for review.",
+    "expected_impact": "Reduce manual invoice triage effort by 55 percent and improve exception visibility before month-end close.",
+    "target_date": "6 weeks",
+    "constraints": "Use dummy invoice data for demo. Must show audit trail and human approval for exceptions.",
+    "optional_skills": "Document AI, RAG, workflow automation, compliance"
+  },
+  {
+    "title": "Demand forecasting quick win for retail stockouts",
+    "requester": "Sanjay Krishnan",
+    "business_unit": "Retail",
+    "problem_statement": "Regional planners still use spreadsheets to identify stockout risk. They want a quick AI prototype that combines sales history, promotion calendar, and weather signals to highlight stores likely to run out of high-demand SKUs next week.",
+    "expected_impact": "Prevent avoidable stockouts in pilot stores and reduce planner analysis time.",
+    "target_date": "3 weeks",
+    "constraints": "Prototype only. Data is synthetic for hackathon. No production integration required.",
+    "optional_skills": "Forecasting, data pipelines, dashboard UX"
+  },
+  {
+    "title": "Voice-enabled knowledge support for field engineers",
+    "requester": "Amit Verma",
+    "business_unit": "Telecom",
+    "problem_statement": "Field engineers call senior experts when troubleshooting equipment issues. We need a voice-friendly assistant that can answer from service manuals, collect incident context, and suggest next steps while preserving a transcript for audit.",
+    "expected_impact": "Reduce expert escalations and improve first-time resolution for common field incidents.",
+    "target_date": "8 weeks",
+    "constraints": "Must avoid customer IP in demo. Voice is preferred but not mandatory for MVP.",
+    "optional_skills": "RAG, Live API, voice, field service"
+  }
+]

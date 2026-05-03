@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ app_name }} | AI Demand Pipeline</title>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/layout.css" />
+    <link rel="stylesheet" href="/static/css/components.css" />
+  </head>
+  <body data-gemini-enabled="{{ 'true' if gemini_enabled else 'false' }}">
+    <div class="app-shell">
+      <aside class="side-rail" aria-label="Primary navigation">
+        <div class="brand-lockup">
+          <span class="brand-mark">OA</span>
+          <div>
+            <strong>OrchestrateAI</strong>
+            <small>Demand to delivery</small>
+          </div>
+        </div>
+        <nav class="rail-nav">
+          <a href="#intake">Intake</a>
+          <a href="#pipeline">Pipeline</a>
+          <a href="#fulfilment">Fulfilment</a>
+          <a href="#tracking">Tracking</a>
+          <a href="#evidence">Evidence</a>
+        </nav>
+        <div class="rail-note">
+          <span class="status-dot"></span>
+          <span>Dummy-data demo. Drafts are not sent.</span>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">AI Club Demand Pipeline</p>
+            <h1>One demand in. Governed execution out.</h1>
+          </div>
+          <div class="topbar-actions">
+            <span id="engineBadge" class="badge">Engine ready</span>
+            <button id="runPipelineBtn" class="primary-action" type="button" disabled>
+              Run AI Pipeline
+            </button>
+          </div>
+        </header>
+
+        <section class="hero-grid" id="intake">
+          <form id="intakeForm" class="panel intake-panel">
+            <div class="section-heading">
+              <p class="eyebrow">Single-entry intake</p>
+              <h2>Capture the messy demand</h2>
+              <p>The downstream route, manager, squad, timeline, and comms are derived from this one record.</p>
+            </div>
+
+            <div class="field-grid">
+              <label>
+                <span>Demand title</span>
+                <input name="title" required minlength="3" placeholder="AI assistant for vendor invoice triage" />
+              </label>
+              <label>
+                <span>Requester</span>
+                <input name="requester" required placeholder="Priya Sharma" />
+              </label>
+              <label>
+                <span>Business unit</span>
+                <input name="business_unit" required placeholder="Operations" />
+              </label>
+              <label>
+                <span>Target date / urgency</span>
+                <input name="target_date" required placeholder="6 weeks" />
+              </label>
+            </div>
+
+            <label>
+              <span>Problem statement</span>
+              <textarea name="problem_statement" required minlength="20" rows="6" placeholder="Paste the demand as received from the business..."></textarea>
+            </label>
+            <label>
+              <span>Expected impact</span>
+              <textarea name="expected_impact" required rows="3" placeholder="Reduce manual effort, improve SLA, unlock reuse..."></textarea>
+            </label>
+            <div class="field-grid">
+              <label>
+                <span>Constraints</span>
+                <input name="constraints" placeholder="Dummy data only, audit needed" />
+              </label>
+              <label>
+                <span>Optional skills</span>
+                <input name="optional_skills" placeholder="Document AI, RAG, MLOps" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="secondary-action" type="submit">Create demand record</button>
+              <span id="demandStatus" class="muted">No demand selected.</span>
+            </div>
+          </form>
+
+          <aside class="panel sample-panel">
+            <div class="section-heading">
+              <p class="eyebrow">Demo accelerators</p>
+              <h2>Sample demands</h2>
+              <p>Load one to move quickly through the judging story.</p>
+            </div>
+            <div id="sampleList" class="sample-list"></div>
+          </aside>
+        </section>
+
+        <section class="pipeline-strip" id="pipeline" aria-label="Pipeline stages">
+          <div id="pipelineStages" class="stage-row"></div>
+        </section>
+
+        <section class="cockpit-grid">
+          <div class="panel" id="analysisPanel">
+            <p class="eyebrow">Track 1</p>
+            <h2>AI triage</h2>
+            <div class="empty-state">Run the pipeline to extract domain, priority, complexity, and skills.</div>
+          </div>
+          <div class="panel" id="decisionPanel">
+            <p class="eyebrow">Track 2</p>
+            <h2>Decision and governance</h2>
+            <div class="empty-state">Route decision will appear here.</div>
+          </div>
+          <div class="panel" id="managerPanel">
+            <p class="eyebrow">Assignment</p>
+            <h2>Manager recommendation</h2>
+            <div class="empty-state">Manager scoring will appear here.</div>
+          </div>
+        </section>
+
+        <section class="fulfilment-grid" id="fulfilment">
+          <div class="panel wide-panel" id="teamPanel">
+            <p class="eyebrow">Track 3</p>
+            <h2>Resource fulfilment and rebalance</h2>
+            <div class="empty-state">Suggested team composition will appear here.</div>
+          </div>
+          <div class="panel" id="assetPanel">
+            <p class="eyebrow">Asset-first</p>
+            <h2>Reusable accelerators</h2>
+            <div class="empty-state">Reusable assets will appear here.</div>
+          </div>
+        </section>
+
+        <section class="tracking-grid" id="tracking">
+          <div class="panel wide-panel" id="trackingPanel">
+            <p class="eyebrow">Track 4</p>
+            <h2>Timeline and SLA risk</h2>
+            <div class="empty-state">Tracking plan will appear here.</div>
+          </div>
+          <div class="panel" id="notificationsPanel">
+            <p class="eyebrow">Comms automation</p>
+            <h2>Notification drafts</h2>
+            <div class="empty-state">Drafts will appear here. Nothing is sent.</div>
+          </div>
+        </section>
+
+        <section class="evidence-grid" id="evidence">
+          <div class="panel wide-panel" id="evidencePanel">
+            <p class="eyebrow">Automation evidence</p>
+            <h2>Before vs after</h2>
+            <div class="empty-state">Manual-step elimination will appear here.</div>
+          </div>
+          <div class="panel">
+            <p class="eyebrow">Optional voice AI</p>
+            <h2>Ask why</h2>
+            <form id="explainForm" class="ask-form">
+              <input name="question" placeholder="Why this route and team?" />
+              <button type="submit" class="secondary-action">Ask</button>
+            </form>
+            <div id="explainAnswer" class="answer-box">Create and run a demand first.</div>
+          </div>
+        </section>
+
+        <section class="panel audit-panel">
+          <p class="eyebrow">Auditability</p>
+          <h2>Decision trail</h2>
+          <div id="auditPanel" class="audit-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/static/js/main.js"></script>
+  </body>
+</html>
