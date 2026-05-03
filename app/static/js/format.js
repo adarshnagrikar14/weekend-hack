@@ -23,10 +23,17 @@ export function scoreRows(scores = {}) {
     .map(
       ([label, value]) => `
         <div class="score-row">
-          <strong>${escapeHtml(label.replaceAll("_", " "))}</strong>
+          <strong>${escapeHtml(titleLabel(label))}</strong>
           <span>${escapeHtml(value)}</span>
         </div>
       `
     )
     .join("");
+}
+
+export function titleLabel(value) {
+  const label = String(value ?? "")
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return label.replaceAll("Fulfilment", "Fulfillment");
 }

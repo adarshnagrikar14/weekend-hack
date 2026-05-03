@@ -34,7 +34,7 @@ def draft_notifications(
             "body": (
                 f"Suggested team: {', '.join(team_names)}. "
                 f"Reusable assets: {', '.join(assets)}. "
-                f"Fulfilment model: {team_plan['fulfilment_model']}."
+                f"Fulfillment model: {team_plan['fulfilment_model']}."
             ),
         },
         "demand_owner_update": {

@@ -1,4 +1,4 @@
-import { escapeHtml } from "./format.js";
+import { escapeHtml, titleLabel } from "./format.js";
 
 const trackingPanel = document.querySelector("#trackingPanel");
 const notificationsPanel = document.querySelector("#notificationsPanel");
@@ -16,13 +16,15 @@ export function renderTracking(result) {
 
 function renderTimeline(plan) {
   trackingPanel.innerHTML = `
-    <p class="eyebrow">Track 4</p>
-    <h2>Timeline and SLA risk</h2>
-    <div class="metric-row">
-      <strong>${escapeHtml(plan.sla_risk)} risk</strong>
-      <span>${escapeHtml(plan.bottleneck)} Next: ${escapeHtml(plan.next_best_action)}</span>
+    <div class="panel-title-row">
+      <h2>Timeline and SLA Risk</h2>
+      <span class="chip warn">${escapeHtml(plan.sla_risk)} risk</span>
     </div>
-    <div class="timeline">
+    <div class="tracking-summary">
+      <div><strong>Bottleneck</strong><span>${escapeHtml(plan.bottleneck)}</span></div>
+      <div><strong>Next best action</strong><span>${escapeHtml(plan.next_best_action)}</span></div>
+    </div>
+    <div class="timeline-list">
       ${(plan.timeline || []).map(timelineItem).join("")}
     </div>
   `;
@@ -31,7 +33,7 @@ function renderTimeline(plan) {
 function timelineItem(item) {
   return `
     <div class="timeline-item">
-      <span class="chip ${item.status === "complete" ? "" : "warn"}">${escapeHtml(item.status)}</span>
+      <span class="chip ${item.status === "complete" ? "" : "warn"}">${escapeHtml(titleLabel(item.status))}</span>
       <div>
         <strong>${escapeHtml(item.stage)}</strong>
         <p class="muted">${escapeHtml(item.manual_step_removed)}</p>
@@ -48,9 +50,10 @@ function renderNotifications(notifications) {
     notifications.demand_owner_update,
   ].filter(Boolean);
   notificationsPanel.innerHTML = `
-    <p class="eyebrow">Comms automation</p>
-    <h2>Notification drafts</h2>
-    <span class="chip warn">${escapeHtml(notifications.send_status)}</span>
+    <div class="panel-title-row">
+      <h2>Notification Drafts</h2>
+      <span class="chip warn">${formatSendStatus(notifications.send_status)}</span>
+    </div>
     <div class="notification-list">
       ${items
         .map(
@@ -67,19 +70,27 @@ function renderNotifications(notifications) {
   `;
 }
 
+function formatSendStatus(value) {
+  if (value === "drafted_not_sent") return "Drafted, not sent";
+  return escapeHtml(String(value || "Drafted"));
+}
+
 function renderEvidence(evidence) {
   const totalSteps = evidence.reduce((sum, item) => sum + Number(item.manual_steps_removed || 0), 0);
   const totalMinutes = evidence.reduce((sum, item) => sum + Number(item.estimated_minutes_saved || 0), 0);
   evidencePanel.innerHTML = `
-    <p class="eyebrow">Automation evidence</p>
-    <h2>${totalSteps} manual steps removed, ${totalMinutes} minutes saved</h2>
-    <div class="metric-list">
+    <div class="panel-title-row">
+      <h2>Before vs After</h2>
+      <span class="score-pill">${totalSteps} steps removed</span>
+    </div>
+    <p class="evidence-total">${totalMinutes} minutes saved across assignment, routing, staffing, and communication.</p>
+    <div class="evidence-list">
       ${evidence
         .map(
           (item) => `
-            <div class="metric-row">
-              <strong>Before: ${escapeHtml(item.before)}</strong>
-              <span>After: ${escapeHtml(item.after)}</span>
+            <div class="evidence-item">
+              <div><strong>Before</strong><span>${escapeHtml(item.before)}</span></div>
+              <div><strong>After</strong><span>${escapeHtml(item.after)}</span></div>
             </div>
           `
         )
