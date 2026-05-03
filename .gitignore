@@ -26,12 +26,13 @@ htmlcov/
 .coverage
 .tox/
 .pytest_cache/
+.cur*re
+*cur*o*
 
 # VSCode settings
 .vscode/
 .idea/
 *.code-workspace
-.cur*re
 
 # Mac system
 .DS_Store
