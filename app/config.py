@@ -28,6 +28,9 @@ class Settings:
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
     ngrok_url: str = os.getenv("NGROK_URL", "")
     database_path: Path = INSTANCE_DIR / "orchestrateai.sqlite3"
+    auth_secret: str = os.getenv("AUTH_SECRET", "change-this-in-env")
+    auth_algorithm: str = "HS256"
+    access_token_minutes: int = int(os.getenv("ACCESS_TOKEN_MINUTES", "1440"))
 
     @property
     def gemini_enabled(self) -> bool:

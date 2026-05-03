@@ -69,7 +69,7 @@ function teamMember(member) {
       <span><strong class="fit-pill">${skillFit}%</strong></span>
       <span><span class="availability-dot"></span>Available ${resource.availability >= 60 ? "now" : "soon"}</span>
       <span><span class="load-bar"><span style="width:${workload}%"></span></span>${workload}% allocated</span>
-      <button class="ghost-action" type="button" data-rebalance-id="${escapeHtml(resource.id)}">
+      <button class="row-action" type="button" data-rebalance-id="${escapeHtml(resource.id)}">
         Mark unavailable
       </button>
     </div>

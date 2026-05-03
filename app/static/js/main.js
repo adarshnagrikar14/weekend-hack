@@ -1,3 +1,4 @@
+import { initAuth } from "./auth.js";
 import { initIntake } from "./intake.js";
 import { renderPipeline } from "./pipeline.js";
 import { initRouter } from "./router.js";
@@ -8,6 +9,8 @@ async function boot() {
   document.addEventListener("pipeline:updated", (event) => {
     renderPipeline(event.detail);
   });
+  const loggedIn = await initAuth();
+  if (!loggedIn) return;
   await initIntake();
   initVoiceExplainability();
 }

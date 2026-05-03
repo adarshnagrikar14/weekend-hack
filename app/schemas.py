@@ -22,3 +22,15 @@ class RebalanceRequest(BaseModel):
 class ExplainRequest(BaseModel):
     demand_id: int
     question: str = Field(min_length=3, max_length=500)
+
+
+class LoginRequest(BaseModel):
+    username: str = Field(min_length=3, max_length=120)
+    password: str = Field(min_length=6, max_length=200)
+
+
+class RegisterRequest(BaseModel):
+    username: str = Field(min_length=3, max_length=120)
+    display_name: str = Field(min_length=2, max_length=120)
+    password: str = Field(min_length=6, max_length=200)
+    role: str = Field(default="analyst", pattern="^(admin|manager|analyst|viewer)$")

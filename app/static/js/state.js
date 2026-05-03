@@ -2,6 +2,7 @@ const state = {
   demandId: null,
   pipeline: null,
   samples: [],
+  user: null,
 };
 
 const subscribers = new Set();

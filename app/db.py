@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -62,8 +62,10 @@ def init_db() -> None:
                 constraints TEXT NOT NULL,
                 optional_skills TEXT NOT NULL DEFAULT '',
                 status TEXT NOT NULL DEFAULT 'intake',
+                created_by INTEGER,
                 created_at TEXT NOT NULL,
-                updated_at TEXT NOT NULL
+                updated_at TEXT NOT NULL,
+                FOREIGN KEY (created_by) REFERENCES users(id)
             );
 
             CREATE TABLE IF NOT EXISTS audit_events (
@@ -117,11 +119,47 @@ def init_db() -> None:
                 created_at TEXT NOT NULL,
                 FOREIGN KEY (demand_id) REFERENCES demands(id) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                display_name TEXT NOT NULL,
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL,
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TEXT NOT NULL,
+                last_login_at TEXT
+            );
+
+            CREATE TABLE IF NOT EXISTS auth_events (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                username TEXT NOT NULL,
+                event_type TEXT NOT NULL,
+                success INTEGER NOT NULL,
+                detail TEXT NOT NULL,
+                ip_address TEXT NOT NULL DEFAULT '',
+                user_agent TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS user_activity (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                event_type TEXT NOT NULL,
+                summary TEXT NOT NULL,
+                meta_json TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            );
             """
         )
+        if not _column_exists(conn, "demands", "created_by"):
+            conn.execute("ALTER TABLE demands ADD COLUMN created_by INTEGER")
 
 
-def insert_demand(payload: dict[str, Any]) -> dict[str, Any]:
+def insert_demand(payload: dict[str, Any], created_by: int | None = None) -> dict[str, Any]:
     timestamp = now_iso()
     with connect() as conn:
         cursor = conn.execute(
@@ -129,8 +167,8 @@ def insert_demand(payload: dict[str, Any]) -> dict[str, Any]:
             INSERT INTO demands (
                 title, requester, business_unit, problem_statement,
                 expected_impact, target_date, constraints, optional_skills,
-                status, created_at, updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                status, created_by, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 payload["title"],
@@ -142,6 +180,7 @@ def insert_demand(payload: dict[str, Any]) -> dict[str, Any]:
                 payload.get("constraints", ""),
                 payload.get("optional_skills", ""),
                 "intake",
+                created_by,
                 timestamp,
                 timestamp,
             ),
@@ -243,3 +282,147 @@ def list_audit_events(demand_id: int) -> list[dict[str, Any]]:
         item["payload"] = decode_json(item.pop("payload_json", None), {})
         events.append(item)
     return events
+
+
+def create_user(
+    username: str, display_name: str, password_hash: str, role: str
+) -> dict[str, Any]:
+    timestamp = now_iso()
+    with connect() as conn:
+        cursor = conn.execute(
+            """
+            INSERT INTO users (username, display_name, password_hash, role, created_at)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (username, display_name, password_hash, role, timestamp),
+        )
+        user_id = cursor.lastrowid
+    user = get_user_by_id(user_id)
+    if user is None:
+        raise RuntimeError("User could not be loaded after insert.")
+    return user
+
+
+def get_user_by_username(username: str) -> dict[str, Any] | None:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT * FROM users WHERE lower(username) = lower(?)", (username,)
+        ).fetchone()
+    return row_to_dict(row)
+
+
+def get_user_by_id(user_id: int) -> dict[str, Any] | None:
+    with connect() as conn:
+        row = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+    return row_to_dict(row)
+
+
+def set_user_last_login(user_id: int) -> None:
+    with connect() as conn:
+        conn.execute(
+            "UPDATE users SET last_login_at = ? WHERE id = ?", (now_iso(), user_id)
+        )
+
+
+def update_user_password(user_id: int, password_hash: str) -> None:
+    with connect() as conn:
+        conn.execute(
+            "UPDATE users SET password_hash = ? WHERE id = ?",
+            (password_hash, user_id),
+        )
+
+
+def add_auth_event(
+    username: str,
+    event_type: str,
+    success: bool,
+    detail: str,
+    user_id: int | None = None,
+    ip_address: str = "",
+    user_agent: str = "",
+) -> None:
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO auth_events (
+                user_id, username, event_type, success, detail, ip_address, user_agent, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                user_id,
+                username,
+                event_type,
+                1 if success else 0,
+                detail,
+                ip_address,
+                user_agent,
+                now_iso(),
+            ),
+        )
+
+
+def add_user_activity(
+    user_id: int, event_type: str, summary: str, meta: dict[str, Any] | None = None
+) -> None:
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO user_activity (user_id, event_type, summary, meta_json, created_at)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (user_id, event_type, summary, encode_json(meta or {}), now_iso()),
+        )
+
+
+def list_user_activity(user_id: int, limit: int = 50) -> list[dict[str, Any]]:
+    with connect() as conn:
+        rows = conn.execute(
+            """
+            SELECT id, event_type, summary, meta_json, created_at
+            FROM user_activity
+            WHERE user_id = ?
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (user_id, limit),
+        ).fetchall()
+    items: list[dict[str, Any]] = []
+    for row in rows:
+        item = row_to_dict(row) or {}
+        item["meta"] = decode_json(item.pop("meta_json", None), {})
+        items.append(item)
+    return items
+
+
+def auth_stats() -> dict[str, Any]:
+    since_24h = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
+    with connect() as conn:
+        user_counts = {
+            row["role"]: row["count"]
+            for row in conn.execute(
+                "SELECT role, COUNT(*) AS count FROM users GROUP BY role"
+            ).fetchall()
+        }
+        events_24h = conn.execute(
+            """
+            SELECT COUNT(*) AS count
+            FROM auth_events
+            WHERE created_at >= ?
+            """,
+            (since_24h,),
+        ).fetchone()
+        demand_total = conn.execute("SELECT COUNT(*) AS count FROM demands").fetchone()
+        activity_total = conn.execute(
+            "SELECT COUNT(*) AS count FROM user_activity"
+        ).fetchone()
+    return {
+        "users_by_role": user_counts,
+        "auth_events_24h": (events_24h or {"count": 0})["count"],
+        "demands_total": (demand_total or {"count": 0})["count"],
+        "activity_total": (activity_total or {"count": 0})["count"],
+    }
+
+
+def _column_exists(conn: sqlite3.Connection, table: str, column: str) -> bool:
+    rows = conn.execute(f"PRAGMA table_info({table})").fetchall()
+    return any(row["name"] == column for row in rows)

@@ -4,6 +4,19 @@
   min-height: 100vh;
 }
 
+.app-shell.is-logged-out {
+  grid-template-columns: 1fr;
+}
+
+.app-shell.is-logged-out .side-rail {
+  display: none;
+}
+
+.app-shell.is-logged-out .workspace {
+  min-height: 100vh;
+  padding: 0;
+}
+
 .side-rail {
   position: sticky;
   top: 0;
@@ -94,6 +107,21 @@
   gap: clamp(1.25rem, 1.8vw, 1.75rem);
 }
 
+.auth-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.auth-page {
+  min-height: 100vh;
+}
+
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.9fr) minmax(420px, 1.1fr);
+  background: var(--bg);
+}
+
 .triage-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -118,6 +146,12 @@
 .tracking-layout,
 .evidence-layout {
   grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.75fr);
+}
+
+.help-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 1.6vw, 1.6rem);
 }
 
 .fulfilment-grid {
@@ -160,6 +194,8 @@
 
   .topbar,
   .hero-grid,
+  .help-layout,
+  .auth-grid,
   .cockpit-grid,
   .triage-grid,
   .fulfillment-layout,

@@ -3,3 +3,5 @@ uvicorn[standard]
 python-dotenv
 google-genai
 jinja2
+PyJWT
+passlib[bcrypt]

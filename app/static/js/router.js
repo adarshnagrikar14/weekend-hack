@@ -1,8 +1,6 @@
 const pages = [...document.querySelectorAll("[data-page]")];
 const links = [...document.querySelectorAll("[data-page-link]")];
 
-const defaultPage = "intake";
-
 export function initRouter() {
   window.addEventListener("hashchange", showCurrentPage);
   showCurrentPage();
@@ -13,8 +11,12 @@ export function goToPage(page) {
 }
 
 function showCurrentPage() {
-  const requested = window.location.hash.replace("#", "") || defaultPage;
-  const activePage = pages.some((page) => page.dataset.page === requested) ? requested : defaultPage;
+  const hasToken = Boolean(localStorage.getItem("orchestrateai_token"));
+  const fallback = hasToken ? "intake" : "login";
+  const requested = window.location.hash.replace("#", "") || fallback;
+  const publicPages = new Set(["login", "signup"]);
+  const safeRequested = !hasToken && !publicPages.has(requested) ? "login" : requested;
+  const activePage = pages.some((page) => page.dataset.page === safeRequested) ? safeRequested : fallback;
 
   pages.forEach((page) => {
     page.hidden = page.dataset.page !== activePage;
