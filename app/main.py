@@ -37,9 +37,9 @@ def startup() -> None:
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(
+        request,
         "index.html",
-        {
-            "request": request,
+        context={
             "app_name": settings.app_name,
             "ngrok_url": settings.ngrok_url,
             "gemini_enabled": settings.gemini_enabled,
